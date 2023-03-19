@@ -1,0 +1,177 @@
+---------------------------------------------------------------------------
+LABEL:          DMPCHK_TOOSMALL
+IDENTIFIER:     E87EF1BE
+
+Date/Time:       Thu Mar 16 15:00:01 +03 2023
+Sequence Number: 11798493
+Machine Id:      00CCCDDD
+Node Id:         foo
+Class:           O
+Type:            PEND
+WPAR:            Global
+Resource Name:   dumpcheck       
+
+Description
+The largest dump device is too small.
+
+Probable Causes
+Neither dump device is large enough to accommodate a system dump at this time.
+
+        Recommended Actions
+        Increase the size of one or both dump devices.
+
+Detail Data
+Largest dump device
+lg_dumplv                                                                                                                       
+Largest dump device size in kb
+     4194304
+Current estimated dump size in kb
+    62537052
+---------------------------------------------------------------------------
+LABEL:          CORE_DUMP
+IDENTIFIER:     A924A5FC
+
+Date/Time:       Mon Feb 27 08:06:54 +03 2023
+Sequence Number: 11798475
+Machine Id:      00CCCDDD
+Node Id:         foo
+Class:           S
+Type:            PERM
+WPAR:            Global
+Resource Name:   SYSPROC         
+
+Description
+SOFTWARE PROGRAM ABNORMALLY TERMINATED
+
+Probable Causes
+SOFTWARE PROGRAM
+
+User Causes
+USER GENERATED SIGNAL
+
+        Recommended Actions
+        CORRECT THEN RETRY
+
+Failure Causes
+SOFTWARE PROGRAM
+
+        Recommended Actions
+        RERUN THE APPLICATION PROGRAM
+        IF PROBLEM PERSISTS THEN DO THE FOLLOWING
+        CONTACT APPROPRIATE SERVICE REPRESENTATIVE
+
+Detail Data
+SIGNAL NUMBER
+           6
+USER'S PROCESS ID:
+               44444
+FILE SYSTEM SERIAL NUMBER
+           5
+INODE NUMBER
+                     2
+CORE FILE NAME
+/tmp/core.44444.37283
+PROGRAM NAME
+java
+STACK EXECUTION DISABLED
+           0
+COME FROM ADDRESS REGISTER
+fflush_un A3C
+
+PROCESSOR ID
+  hw_fru_id: N/A
+  hw_cpu_id: N/A
+
+ADDITIONAL INFORMATION
+pthread_k C4
+??
+_p_raise 48
+raise 4C
+abort BC
+??
+doSystemD F8
+protected 34
+??
+runDumpAg 6F0
+triggerDu 3BC
+generateD 2B4
+??
+structure 2F0
+??
+??
+
+Symptom Data
+REPORTABLE
+1
+INTERNAL ERROR
+0
+SYMPTOM CODE
+PCSS/SPI2 FLDS/java SIG/6 FLDS/doSystemD VALU/f8
+---------------------------------------------------------------------------
+LABEL:          SC_DISK_ERR4
+IDENTIFIER:     DCB47997
+
+Date/Time:       Sun Jan  1 04:07:44 +03 2023
+Sequence Number: 11798416
+Machine Id:      00CCCDDD
+Node Id:         foo
+Class:           H
+Type:            TEMP
+WPAR:            Global
+Resource Name:   hdisk5  
+Resource Class:  disk
+Resource Type:   SOME_TYPE
+Location:        UUUUU.ND1.11111111-P1-C2-C1-T1-2222222222-L9E000000000000
+
+VPD:             
+        Manufacturer................SOMEVENDOR     
+        Machine Type and Model......SOMEMODEL       
+        ROS Level and ID............1111
+        Serial Number...............11111111111
+        Part Number.................23424234234
+        EC Level....................345345345
+        LIC Node VPD................03J2
+        Device Specific.(Z0)........7777777
+        Device Specific.(Z1)........33
+        Device Specific.(Z2)........848484838JJJ
+        Device Specific.(Z3)........123123
+        Device Specific.(Z4)........234234234
+        Device Specific.(Z5)........0000
+        Device Specific.(Z6)........22
+
+Description
+DISK OPERATION ERROR
+
+Probable Causes
+MEDIA
+DASD DEVICE
+
+User Causes
+MEDIA DEFECTIVE
+
+        Recommended Actions
+        FOR REMOVABLE MEDIA, CHANGE MEDIA AND RETRY
+        PERFORM PROBLEM DETERMINATION PROCEDURES
+
+Failure Causes
+MEDIA
+DISK DRIVE
+
+        Recommended Actions
+        FOR REMOVABLE MEDIA, CHANGE MEDIA AND RETRY
+        PERFORM PROBLEM DETERMINATION PROCEDURES
+
+Detail Data
+PATH ID
+           1
+SENSE DATA
+0A00 2800 0000 2B00 0001 0004 0000 0000 0000 0000 0000 0000 0200 0200 0000 0000 
+0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 
+0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 
+0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 
+0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 
+0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 
+0000 0000 0000 1111 2222 3333 4444 0000 0000 0000 0000 0000 0000 0000 0083 0000 
+5555 6666 7777 8888 9999 UUUU AAAA BBBB 0000 CCCC 0000 0000 0000 0000 0000 0000 
+0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 
+0000 0000 0000 0000 0000 0000 0000 
