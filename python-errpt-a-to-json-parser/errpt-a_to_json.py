@@ -1,6 +1,8 @@
 from pyparsing import *
 import os
 import json
+import argparse
+import sys
 
 ###################################
 # regex definitions               #
@@ -69,18 +71,55 @@ grammar = OneOrMore(info_grammar).setResultsName("Errpt Records")
 ###################################
 
 def main():
-    # find raw "errpt -a" output files (with extension *.raw)
-    raw_files = [filename for filename in os.listdir('.') if (filename.endswith("raw"))]
-    # loop raw "errpt -a" files
-    for raw_file in raw_files:
-        # open raw file
-        with open(raw_file,"r") as f:
-            # parse raw file and put the result set in result variable
-            result = grammar.parseString(f.read(), parseAll=True).as_dict()
-        # open json file for write
-        with open(os.path.splitext(raw_file)[0]+".json", "w") as f:
-            # dump the "result" set as json
-            json.dump(result, f, indent=4)
+
+    # parser definition for options, arguments etc.
+    parser = argparse.ArgumentParser()
+    # defines work directory. When given the script traverse all directories and sub directories
+    # of work directory to find files with "raw" extension.
+    # When not given, script parses the string provided by standart input. Like pipes:
+    # errpt -a | errpt-a_to_json.py
+    parser.add_argument("-w", "--workdir", help="Work directory", required=False)
+    # When given the raw file is removed after the parse operation.
+    parser.add_argument('-r', "--remove", action='store_true', required=False)
+    args = parser.parse_args()
+
+    if args.workdir:
+        # walk through args.workdir and find raw "errpt -a" output files (with extension *.raw)
+        # process raw files when found.
+        for root, dirs, files in os.walk(args.workdir):
+            print(root)
+            for file in files:
+                if (file.endswith("raw")):
+                    print("Parsing: " + os.path.join(root, file))
+                    try:
+                        with open(str(os.path.join(root, file)),"r") as f:
+                            # parse raw file and put the result set in result variable
+                            result = grammar.parseString(f.read(), parseAll=True).as_dict()
+                    except Exception as e:
+                        print("File: " + os.path.join(root, file) + " Parse error: " + e)
+                        exit(1)
+                    try:
+                        # open json file for write
+                        with open(os.path.splitext(os.path.join(root, file))[0]+".json", "w") as f:
+                            # dump the "result" set as json
+                            json.dump(result, f, indent=4)
+                    except Exception as e:
+                        print("File: " + os.path.join(root, file) + " Dump error: " + e)
+                        exit(1)
+                    else:
+                        # remove parsed raw file
+                        if args.remove:
+                            if os.path.exists(os.path.join(root, file)):
+                                os.remove(os.path.join(root, file))
+    
+    else:
+        try:
+            result = grammar.parseString(sys.stdin.read(), parseAll=True).as_dict()
+            print(json.dumps(result, indent=4))
+        except Exception as e:
+            print("Screen dump error" + e)
+            exit(1)
+                        
 
 if __name__ == "__main__":
     main()
