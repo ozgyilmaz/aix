@@ -13,13 +13,17 @@ import sys
 regex_dotted_line       = Suppress(Regex("\.{2,}"))
 # definition for separator dashed line, consisting of 75 dashes
 regex_dashed_line       = Regex( r"-{75}" )
-# read everything until a dashed line, consisting of 75 dashes
-# used to determine the end of description
-regex_until_dashed_line = Regex( r"(.|\n)*?---------------------------------------------------------------------------" )
-# read everything until EOF
-# used to determine the end of description
-regex_until_eof         = Regex( r"(.|\n)*" )
-
+# new line
+# if you want to suppress new line \n characters, you can put
+# .suppress() at the end of the line. Like:
+# NL = LineEnd().suppress()
+NL = LineEnd()
+# read everything until a dashed line (consisting of 75 dashes
+# used to determine the end of description) or until EOF
+# also suppress this dash line or EOF
+# Thanks to PaulMcG
+# https://stackoverflow.com/questions/75782477/how-to-use-pyparsing-for-multilined-fields-that-has-two-different-types-of-endin
+description_terminator = ('---------------------------------------------------------------------------' + NL | StringEnd()).suppress()
 
 ###################################
 # VPD definition                  #
@@ -53,7 +57,11 @@ info_line           = Dict( Group( info_key + info_value ) )
 # "probable cause", "user causes" etc will be parsed in next version
 # description (as a whole test containing sub titles like probable cause etc)
 # may end with a dashed line, or with EOF.
-info_description    = Suppress(Literal("Description")) + (regex_until_dashed_line|regex_until_eof).setResultsName('Description')
+info_description    = Combine(
+    Suppress("Description" + NL)
+    + ZeroOrMore(rest_of_line + NL, stop_on=description_terminator)
+).setResultsName('Description')
+
 # info grammar sums of everything
 info_grammar        = Group(Suppress(Optional(regex_dashed_line)) + OneOrMore(info_line) + info_description)
 
