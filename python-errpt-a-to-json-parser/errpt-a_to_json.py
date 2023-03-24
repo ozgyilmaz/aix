@@ -33,7 +33,7 @@ description_terminator = ('-----------------------------------------------------
 # it may also contain a single dot, like: "Device Specific.(Z0)"
 vpd_key     = Combine(Word(alphanums + " ") + ('.' + Word(alphanums+"("+")")) * (0,1))
 # vpd values consist of alphanumeric chars
-vpd_value   = Word(alphanums)
+vpd_value   = Word(alphanums+".")
 # a vpd key/value pair contains a "key", some "dots" and a "value"
 vpd_line    = Dict(Group(vpd_key + regex_dotted_line + vpd_value))
 # vpd grammar definition. We need to find at least one key/value pair if we hit a "VPD:" keyword
@@ -104,7 +104,8 @@ def main():
                             # parse raw file and put the result set in result variable
                             result = grammar.parseString(f.read(), parseAll=True).as_dict()
                     except Exception as e:
-                        print("File: " + os.path.join(root, file) + " Parse error: " + e)
+                        print("File: " + os.path.join(root, file))
+                        print(e)
                         exit(1)
                     try:
                         # open json file for write
@@ -112,7 +113,8 @@ def main():
                             # dump the "result" set as json
                             json.dump(result, f, indent=4)
                     except Exception as e:
-                        print("File: " + os.path.join(root, file) + " Dump error: " + e)
+                        print("File: " + os.path.join(root, file))
+                        print(e)
                         exit(1)
                     else:
                         # remove parsed raw file
@@ -127,7 +129,8 @@ def main():
             result = grammar.parseString(sys.stdin.read(), parseAll=True).as_dict()
             print(json.dumps(result, indent=4))
         except Exception as e:
-            print("Screen dump error" + e)
+            print("Screen dump error")
+            print(e)
             exit(1)
                         
 
