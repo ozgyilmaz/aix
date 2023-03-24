@@ -90,7 +90,7 @@ def main():
     # When given the raw file is removed after the parse operation.
     parser.add_argument('-r', "--remove", action='store_true', required=False)
     args = parser.parse_args()
-
+    # if workdir is given
     if args.workdir:
         # walk through args.workdir and find raw "errpt -a" output files (with extension *.raw)
         # process raw files when found.
@@ -119,7 +119,9 @@ def main():
                         if args.remove:
                             if os.path.exists(os.path.join(root, file)):
                                 os.remove(os.path.join(root, file))
-    
+    # if workdir is NOT given. that means the script will parse the standard input data
+    # like piped data:
+    # cat somefile | python errpt-a_to_json.py
     else:
         try:
             result = grammar.parseString(sys.stdin.read(), parseAll=True).as_dict()
