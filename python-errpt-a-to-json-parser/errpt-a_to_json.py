@@ -4,7 +4,7 @@ import json
 import argparse
 import sys
 
-# Custom parse action
+# Custom action to strip the values
 def strip_value(tokens):
     return [token.strip() for token in tokens]
 
@@ -27,7 +27,7 @@ NL = LineEnd()
 # also suppress this dash line or EOF
 # Thanks to PaulMcG
 # https://stackoverflow.com/questions/75782477/how-to-use-pyparsing-for-multilined-fields-that-has-two-different-types-of-endin
-description_terminator = ('---------------------------------------------------------------------------' + NL | StringEnd()).suppress()
+dashed_separator = (("-" * 75) + NL | StringEnd()).suppress()
 
 ###################################
 # VPD definition                  #
@@ -63,7 +63,7 @@ info_line           = Dict( Group( info_key + info_value ) )
 # may end with a dashed line, or with EOF.
 info_description    = Combine(
     Suppress("Description" + NL)
-    + ZeroOrMore(rest_of_line + NL, stop_on=description_terminator)
+    + ZeroOrMore(rest_of_line + NL, stop_on=dashed_separator)
 ).setResultsName('Description')
 
 # info grammar sums of everything

@@ -10,8 +10,8 @@
             "Class": "O",
             "Type": "PEND",
             "WPAR": "Global",
-            "Resource Name": "dumpcheck       ",
-            "Description": "The largest dump device is too small.\n\nProbable Causes\nNeither dump device is large enough to accommodate a system dump at this time.\n\n        Recommended Actions\n        Increase the size of one or both dump devices.\n\nDetail Data\nLargest dump device\nlg_dumplv                                                                                                                       \nLargest dump device size in kb\n     4194304\nCurrent estimated dump size in kb\n    62537052\n"
+            "Resource Name": "dumpcheck",
+            "Description": "The largest dump device is too small.\n\nProbable Causes\nNeither dump device is large enough to accommodate a system dump at this time.\n\nRecommended Actions\nIncrease the size of one or both dump devices.\n\nDetail Data\nLargest dump device\nlg_dumplv\nLargest dump device size in kb\n4194304\nCurrent estimated dump size in kb\n62537052\n"
         },
         {
             "LABEL": "CORE_DUMP",
@@ -23,8 +23,8 @@
             "Class": "S",
             "Type": "PERM",
             "WPAR": "Global",
-            "Resource Name": "SYSPROC         ",
-            "Description": "SOFTWARE PROGRAM ABNORMALLY TERMINATED\n\nProbable Causes\nSOFTWARE PROGRAM\n\nUser Causes\nUSER GENERATED SIGNAL\n\n        Recommended Actions\n        CORRECT THEN RETRY\n\nFailure Causes\nSOFTWARE PROGRAM\n\n        Recommended Actions\n        RERUN THE APPLICATION PROGRAM\n        IF PROBLEM PERSISTS THEN DO THE FOLLOWING\n        CONTACT APPROPRIATE SERVICE REPRESENTATIVE\n\nDetail Data\nSIGNAL NUMBER\n           6\nUSER'S PROCESS ID:\n               44444\nFILE SYSTEM SERIAL NUMBER\n           5\nINODE NUMBER\n                     2\nCORE FILE NAME\n/tmp/core.44444.37283\nPROGRAM NAME\njava\nSTACK EXECUTION DISABLED\n           0\nCOME FROM ADDRESS REGISTER\nfflush_un A3C\n\nPROCESSOR ID\n  hw_fru_id: N/A\n  hw_cpu_id: N/A\n\nADDITIONAL INFORMATION\npthread_k C4\n??\n_p_raise 48\nraise 4C\nabort BC\n??\ndoSystemD F8\nprotected 34\n??\nrunDumpAg 6F0\ntriggerDu 3BC\ngenerateD 2B4\n??\nstructure 2F0\n??\n??\n\nSymptom Data\nREPORTABLE\n1\nINTERNAL ERROR\n0\nSYMPTOM CODE\nPCSS/SPI2 FLDS/java SIG/6 FLDS/doSystemD VALU/f8\n"
+            "Resource Name": "SYSPROC",
+            "Description": "SOFTWARE PROGRAM ABNORMALLY TERMINATED\n\nProbable Causes\nSOFTWARE PROGRAM\n\nUser Causes\nUSER GENERATED SIGNAL\n\nRecommended Actions\nCORRECT THEN RETRY\n\nFailure Causes\nSOFTWARE PROGRAM\n\nRecommended Actions\nRERUN THE APPLICATION PROGRAM\nIF PROBLEM PERSISTS THEN DO THE FOLLOWING\nCONTACT APPROPRIATE SERVICE REPRESENTATIVE\n\nDetail Data\nSIGNAL NUMBER\n6\nUSER'S PROCESS ID:\n44444\nFILE SYSTEM SERIAL NUMBER\n5\nINODE NUMBER\n2\nCORE FILE NAME\n/tmp/core.44444.37283\nPROGRAM NAME\njava\nSTACK EXECUTION DISABLED\n0\nCOME FROM ADDRESS REGISTER\nfflush_un A3C\n\nPROCESSOR ID\nhw_fru_id: N/A\nhw_cpu_id: N/A\n\nADDITIONAL INFORMATION\npthread_k C4\n??\n_p_raise 48\nraise 4C\nabort BC\n??\ndoSystemD F8\nprotected 34\n??\nrunDumpAg 6F0\ntriggerDu 3BC\ngenerateD 2B4\n??\nstructure 2F0\n??\n??\n\nSymptom Data\nREPORTABLE\n1\nINTERNAL ERROR\n0\nSYMPTOM CODE\nPCSS/SPI2 FLDS/java SIG/6 FLDS/doSystemD VALU/f8\n"
         },
         {
             "LABEL": "SC_DISK_ERR4",
@@ -36,11 +36,12 @@
             "Class": "H",
             "Type": "TEMP",
             "WPAR": "Global",
-            "Resource Name": "hdisk5  ",
+            "Resource Name": "hdisk5",
             "Resource Class": "disk",
             "Resource Type": "SOME_TYPE",
-            "Location": "UUUUU.ND1.11111111-P1-C2-C1-T1-2222222222-L9E000000000000",
+            "Location": "",
             "VPD": {
+                "Manufacturer": "SOMEVENDOR",
                 "Machine Type and Model": "SOMEMODEL",
                 "ROS Level and ID": "1111",
                 "Serial Number": "11111111111",
@@ -55,7 +56,7 @@
                 "Device Specific.(Z5)": "0000",
                 "Device Specific.(Z6)": "22"
             },
-            "Description": "DISK OPERATION ERROR\n\nProbable Causes\nMEDIA\nDASD DEVICE\n\nUser Causes\nMEDIA DEFECTIVE\n\n        Recommended Actions\n        FOR REMOVABLE MEDIA, CHANGE MEDIA AND RETRY\n        PERFORM PROBLEM DETERMINATION PROCEDURES\n\nFailure Causes\nMEDIA\nDISK DRIVE\n\n        Recommended Actions\n        FOR REMOVABLE MEDIA, CHANGE MEDIA AND RETRY\n        PERFORM PROBLEM DETERMINATION PROCEDURES\n\nDetail Data\nPATH ID\n           1\nSENSE DATA\n0A00 2800 0000 2B00 0001 0004 0000 0000 0000 0000 0000 0000 0200 0200 0000 0000 \n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 \n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 \n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 \n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 \n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 \n0000 0000 0000 1111 2222 3333 4444 0000 0000 0000 0000 0000 0000 0000 0083 0000 \n5555 6666 7777 8888 9999 UUUU AAAA BBBB 0000 CCCC 0000 0000 0000 0000 0000 0000 \n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 \n0000 0000 0000 0000 0000 0000 0000 "
+            "Description": "DISK OPERATION ERROR\n\nProbable Causes\nMEDIA\nDASD DEVICE\n\nUser Causes\nMEDIA DEFECTIVE\n\nRecommended Actions\nFOR REMOVABLE MEDIA, CHANGE MEDIA AND RETRY\nPERFORM PROBLEM DETERMINATION PROCEDURES\n\nFailure Causes\nMEDIA\nDISK DRIVE\n\nRecommended Actions\nFOR REMOVABLE MEDIA, CHANGE MEDIA AND RETRY\nPERFORM PROBLEM DETERMINATION PROCEDURES\n\nDetail Data\nPATH ID\n1\nSENSE DATA\n0A00 2800 0000 2B00 0001 0004 0000 0000 0000 0000 0000 0000 0200 0200 0000 0000\n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000\n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000\n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000\n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000\n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000\n0000 0000 0000 1111 2222 3333 4444 0000 0000 0000 0000 0000 0000 0000 0083 0000\n5555 6666 7777 8888 9999 UUUU AAAA BBBB 0000 CCCC 0000 0000 0000 0000 0000 0000\n0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000\n0000 0000 0000 0000 0000 0000 0000"
         }
     ]
 }

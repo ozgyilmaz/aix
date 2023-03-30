@@ -121,7 +121,7 @@ WPAR:            Global
 Resource Name:   hdisk5  
 Resource Class:  disk
 Resource Type:   SOME_TYPE
-Location:        UUUUU.ND1.11111111-P1-C2-C1-T1-2222222222-L9E000000000000
+Location:        
 
 VPD:             
         Manufacturer................SOMEVENDOR     
