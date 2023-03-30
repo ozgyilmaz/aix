@@ -3,6 +3,7 @@ import os
 import json
 import argparse
 import sys
+import glob
 
 # Custom action to strip the values
 def strip_value(tokens):
@@ -94,35 +95,31 @@ def main():
     args = parser.parse_args()
     # if workdir is given
     if args.workdir:
-        # walk through args.workdir and find raw "errpt -a" output files (with extension *.raw)
-        # process raw files when found.
-        for root, dirs, files in os.walk(args.workdir):
-            print(root)
-            for file in files:
-                if (file.endswith("raw")):
-                    print("Parsing: " + os.path.join(root, file))
-                    try:
-                        with open(str(os.path.join(root, file)),"r") as f:
-                            # parse raw file and put the result set in result variable
-                            result = grammar.parseString(f.read(), parseAll=True).as_dict()
-                    except Exception as e:
-                        print("File: " + os.path.join(root, file))
-                        print(e)
-                        exit(1)
-                    try:
-                        # open json file for write
-                        with open(os.path.splitext(os.path.join(root, file))[0]+".json", "w") as f:
-                            # dump the "result" set as json
-                            json.dump(result, f, indent=4)
-                    except Exception as e:
-                        print("File: " + os.path.join(root, file))
-                        print(e)
-                        exit(1)
-                    else:
-                        # remove parsed raw file
-                        if args.remove:
-                            if os.path.exists(os.path.join(root, file)):
-                                os.remove(os.path.join(root, file))
+        file_list = glob.glob(args.workdir + '/**/*.raw', recursive=True)
+        for file in file_list:
+            print("Parsing: " + file)
+            try:
+                with open(file,"r") as f:
+                    # parse raw file and put the result set in result variable
+                    result = grammar.parseString(f.read(), parseAll=True).as_dict()
+            except Exception as e:
+                print("File: " + file)
+                print(e)
+                exit(1)
+            try:
+                # open json file for write
+                with open(os.path.splitext(file)[0]+".json", "w") as f:
+                    # dump the "result" set as json
+                    json.dump(result, f, indent=4)
+            except Exception as e:
+                print("File: " + file)
+                print(e)
+                exit(1)
+            else:
+                # remove parsed raw file
+                if args.remove:
+                    if os.path.exists(file):
+                        os.remove(file)
     # if workdir is NOT given. that means the script will parse the standard input data
     # like piped data:
     # cat somefile | python errpt-a_to_json.py
