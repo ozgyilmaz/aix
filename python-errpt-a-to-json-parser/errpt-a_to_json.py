@@ -4,6 +4,10 @@ import json
 import argparse
 import sys
 
+# Custom parse action
+def strip_value(tokens):
+    return [token.strip() for token in tokens]
+
 ###################################
 # regex definitions               #
 ###################################
@@ -49,7 +53,7 @@ info_key            = Combine(Word(alphanums+" "+"/") + Suppress(":"))
 # value may have alphanumeric chars, space, some special chars etc
 # value also may have the whole VPD information and that should be
 # also parsed as key/value pairs
-info_value          = Word(alphanums+" "+":"+"+"+"_"+"."+"-") + Optional(vpd_grammar)
+info_value          = rest_of_line.addParseAction(strip_value) + Optional(vpd_grammar)
 # an info key/value pair contains a "key" and a "value"
 info_line           = Dict( Group( info_key + info_value ) )
 # description has a special format... it doesnt have semicolon, also it's not
