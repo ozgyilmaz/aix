@@ -15,8 +15,6 @@ def strip_value(tokens):
 # regex for string consisting of at least two dots
 # used for key/value pairs of VPD blocks
 regex_dotted_line       = Suppress(Regex("\.{2,}"))
-# definition for separator dashed line, consisting of 75 dashes
-regex_dashed_line       = Regex( r"-{75}" )
 # new line
 # if you want to suppress new line \n characters, you can put
 # .suppress() at the end of the line. Like:
@@ -67,7 +65,7 @@ info_description    = Combine(
 ).setResultsName('Description')
 
 # info grammar sums of everything
-info_grammar        = Group(Suppress(Optional(regex_dashed_line)) + OneOrMore(info_line) + info_description)
+info_grammar        = Group(Suppress(Optional(("-" * 75))) + OneOrMore(info_line) + info_description)
 
 ###################################
 # final grammar                   #
