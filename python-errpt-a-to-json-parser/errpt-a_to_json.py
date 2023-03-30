@@ -10,7 +10,7 @@ def strip_value(tokens):
     return [token.strip() for token in tokens]
 
 ###################################
-# regex definitions               #
+# general definitions               #
 ###################################
 
 # regex for string consisting of at least two dots
@@ -90,12 +90,16 @@ def main():
     # When not given, script parses the string provided by standart input. Like pipes:
     # errpt -a | errpt-a_to_json.py
     parser.add_argument("-w", "--workdir", help="Work directory", required=False)
+    # let the admin specify the extension of files containing raw errpt data
+    # no default value. usage: -e raw
+    parser.add_argument("-e", "--extension", help="Extension of files", required=True)
     # When given the raw file is removed after the parse operation.
     parser.add_argument('-r', "--remove", action='store_true', required=False)
     args = parser.parse_args()
     # if workdir is given
     if args.workdir:
-        file_list = glob.glob(args.workdir + '/**/*.raw', recursive=True)
+        # get the file list recursively
+        file_list = glob.glob(args.workdir + '/**/*.' + args.extension, recursive=True)
         for file in file_list:
             print("Parsing: " + file)
             try:
