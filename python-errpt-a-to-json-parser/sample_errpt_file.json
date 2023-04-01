@@ -14,6 +14,19 @@
             "Description": "The largest dump device is too small.\n\nProbable Causes\nNeither dump device is large enough to accommodate a system dump at this time.\n\nRecommended Actions\nIncrease the size of one or both dump devices.\n\nDetail Data\nLargest dump device\nlg_dumplv\nLargest dump device size in kb\n4194304\nCurrent estimated dump size in kb\n62537052\n"
         },
         {
+            "LABEL": "DMPCHK_TOOSMALL",
+            "IDENTIFIER": "E87EF1BE",
+            "Date/Time": "Thu Mar 17 15:00:01 +03 2023",
+            "Sequence Number": "11798493",
+            "Machine Id": "00CCCDDD",
+            "Node Id": "foo",
+            "Class": "O",
+            "Type": "PEND",
+            "WPAR": "Global",
+            "Resource Name": "dumpcheck",
+            "Description": "The largest dump device is too small.\n\nProbable Causes\nNeither dump device is large enough to accommodate a system dump at this time.\n\nRecommended Actions\nIncrease the size of one or both dump devices.\n\nDetail Data\nLargest dump device\nlg_dumplv\nLargest dump device size in kb\n4194304\nCurrent estimated dump size in kb\n62537052\n"
+        },
+        {
             "LABEL": "CORE_DUMP",
             "IDENTIFIER": "A924A5FC",
             "Date/Time": "Mon Feb 27 08:06:54 +03 2023",

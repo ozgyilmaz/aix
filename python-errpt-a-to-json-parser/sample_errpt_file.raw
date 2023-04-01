@@ -28,6 +28,35 @@ Largest dump device size in kb
 Current estimated dump size in kb
     62537052
 ---------------------------------------------------------------------------
+LABEL:          DMPCHK_TOOSMALL
+IDENTIFIER:     E87EF1BE
+
+Date/Time:       Thu Mar 17 15:00:01 +03 2023
+Sequence Number: 11798493
+Machine Id:      00CCCDDD
+Node Id:         foo
+Class:           O
+Type:            PEND
+WPAR:            Global
+Resource Name:   dumpcheck       
+
+Description
+The largest dump device is too small.
+
+Probable Causes
+Neither dump device is large enough to accommodate a system dump at this time.
+
+        Recommended Actions
+        Increase the size of one or both dump devices.
+
+Detail Data
+Largest dump device
+lg_dumplv                                                                                                                       
+Largest dump device size in kb
+     4194304
+Current estimated dump size in kb
+    62537052
+---------------------------------------------------------------------------
 LABEL:          CORE_DUMP
 IDENTIFIER:     A924A5FC
 
