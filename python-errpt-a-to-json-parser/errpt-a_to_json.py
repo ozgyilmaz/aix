@@ -4,49 +4,31 @@ import json
 import argparse
 import sys
 import glob
+import pathlib
+from datetime import datetime
 
 # Custom action to strip the values
 def strip_value(tokens):
     return [token.strip() for token in tokens]
 
-###################################
-# general definitions               #
-###################################
-
-# regex for string consisting of at least two dots
-# used for key/value pairs of VPD blocks
+# regex for separators used for key/value pairs of VPD blocks
+# i.e. Manufacturer................SOMEVENDOR
 regex_dotted_line       = Suppress(Regex("\.{2,}"))
 # new line
-# if you want to suppress new line \n characters, you can put
-# .suppress() at the end of the line. Like:
-# NL = LineEnd().suppress()
 NL = LineEnd()
-# read everything until a dashed line (consisting of 75 dashes
-# used to determine the end of description) or until EOF
-# also suppress this dash line or EOF
+# read everything until a dashed line or until EOF
 # Thanks to PaulMcG
 # https://stackoverflow.com/questions/75782477/how-to-use-pyparsing-for-multilined-fields-that-has-two-different-types-of-endin
 dashed_separator = (("-" * 75) + NL | StringEnd()).suppress()
-
-###################################
-# VPD definition                  #
-###################################
-
-# vpd keys consist of alphanumeric, space and some special chars.
-# it may also contain a single dot, like: "Device Specific.(Z0)"
+# grammar for vpd keys
+# they may also contain a single dot, like: "Device Specific.(Z0)"
 vpd_key     = Combine(Word(alphanums + " ") + ('.' + Word(alphanums+"("+")")) * (0,1))
-# vpd values consist of alphanumeric chars
+# grammar for vpd values
 vpd_value   = Word(alphanums+".")
-# a vpd key/value pair contains a "key", some "dots" and a "value"
+# grammar for vpd key/value pair
 vpd_line    = Dict(Group(vpd_key + regex_dotted_line + vpd_value))
 # vpd grammar definition. We need to find at least one key/value pair if we hit a "VPD:" keyword
 vpd_grammar = OneOrMore(vpd_line)
-
-
-###################################
-# info definition                 #
-###################################
-
 # standard info key definition like LABEL, IDENTIFIER etc
 info_key            = Combine(Word(alphanums+" "+"/") + Suppress(":"))
 # value may have alphanumeric chars, space, some special chars etc
@@ -57,8 +39,8 @@ info_value          = rest_of_line.addParseAction(strip_value) + Optional(vpd_gr
 info_line           = Dict( Group( info_key + info_value ) )
 # description has a special format... it doesnt have semicolon, also it's not
 # clear where it finishes. 
-# "probable cause", "user causes" etc will be parsed in next version
-# description (as a whole test containing sub titles like probable cause etc)
+# "probable cause", "user causes" etc will be parsed in next version of script
+# description (as a whole text containing sub titles like probable cause etc)
 # may end with a dashed line, or with EOF.
 info_description    = Combine(
     Suppress("Description" + NL)
@@ -68,73 +50,92 @@ info_description    = Combine(
 # info grammar sums of everything
 info_grammar        = Group(Suppress(Optional(("-" * 75))) + OneOrMore(info_line) + info_description)
 
-###################################
-# final grammar                   #
-###################################
-
 # final grammar consists of one or more info grammars which mean errpt records
 grammar = OneOrMore(info_grammar).setResultsName("Errpt Records")
 
+# parse raw "errpt -a" string
+def parse_string(raw_string):
+    try:
+        result = grammar.parseString(raw_string, parseAll=True).as_dict()
+    except Exception as e:
+        print(e)
+        exit(1)
+    return result
 
-
+def dump_json(json_string,file):
+    try:
+        with open(file, "w+") as f:
+            json.dump(json_string, f, indent=4)
+    except Exception as e:
+        print(e)
+        exit(1)
+    return
 ###################################
 # main definition                 #
 ###################################
 
 def main():
 
-    # parser definition for options, arguments etc.
     parser = argparse.ArgumentParser()
-    # defines work directory. When given the script traverse all directories and sub directories
-    # of work directory to find files with "raw" extension.
-    # When not given, script parses the string provided by standart input. Like pipes:
-    # errpt -a | errpt-a_to_json.py
-    parser.add_argument("-w", "--workdir", help="Work directory", required=False)
-    # let the admin specify the extension of files containing raw errpt data
-    # no default value. usage: -e raw
-    parser.add_argument("-e", "--extension", help="Extension of files", required=True)
-    # When given the raw file is removed after the parse operation.
+    parser.add_argument("-s", "--source", help="Source directory", dest="source", required=False)
+    parser.add_argument("-d", "--destination", help="Destination file for json", dest="destination", required=False)
     parser.add_argument('-r', "--remove", action='store_true', required=False)
     args = parser.parse_args()
-    # if workdir is given
-    if args.workdir:
-        # get the file list recursively
-        file_list = glob.glob(args.workdir + '/**/*.' + args.extension, recursive=True)
+
+    # if there is no args.source then the source is stdin
+    if args.source:
+        file_list = glob.glob(args.source, recursive=True)
+        final_dict = []
+
         for file in file_list:
             print("Parsing: " + file)
-            try:
-                with open(file,"r") as f:
-                    # parse raw file and put the result set in result variable
-                    result = grammar.parseString(f.read(), parseAll=True).as_dict()
-            except Exception as e:
-                print("File: " + file)
-                print(e)
-                exit(1)
-            try:
-                # open json file for write
-                with open(os.path.splitext(file)[0]+".json", "w") as f:
-                    # dump the "result" set as json
-                    json.dump(result, f, indent=4)
-            except Exception as e:
-                print("File: " + file)
-                print(e)
-                exit(1)
-            else:
-                # remove parsed raw file
-                if args.remove:
-                    if os.path.exists(file):
-                        os.remove(file)
-    # if workdir is NOT given. that means the script will parse the standard input data
-    # like piped data:
-    # cat somefile | python errpt-a_to_json.py
+            with open(file,"r") as f:
+                result = parse_string(f.read())
+            # remove the source file
+            if args.remove:
+                if os.path.exists(file):
+                    os.remove(file)
+            # no destination file or folder given
+            # so seperate output file in the same folder of raw file
+            if not args.destination:
+                dump_json(result,os.path.splitext(file)[0]+".json")
+            # destination folder is given
+            # so seperate create output file in destination folder
+            elif args.destination and os.path.isdir(args.destination):
+                dump_json(result, os.path.join(args.destination,  os.path.splitext(pathlib.Path(file).name)[0] + ".json"))
+            # destination file is given
+            # so merge all output in destination file
+            # do not repeat same errpt data, be unique
+            elif args.destination:
+                try:
+                    with open(args.destination, "r") as f:
+                        final_dict = json.load(f)["Errpt Records"]
+                except:
+                    pass
+                final_dict = final_dict + result['Errpt Records']
+                # Define a new list to store the unique dictionaries
+                unique_data = []
+                # Define a set to keep track of the dictionaries we've already seen
+                seen = set()
+                # Loop over each dictionary in the original list
+                for d in final_dict:
+                    # Extract the relevant keys
+                    key = (d['LABEL'], d['Date/Time'], d['Node Id'], d['Description'])
+                    # Check if we've already seen this key
+                    if key not in seen:
+                        # If not, add the dictionary to the new list and mark it as seen
+                        unique_data.append(d)
+                        seen.add(key)
+                # Sort dictionaries according to date/time
+                sorted_data = sorted(unique_data, key=lambda x: datetime.strptime(x['Date/Time'], '%a %b %d %H:%M:%S +03 %Y'))
+                # dump everthing to destination file
+                dump_json(sorted_data,args.destination)
+    # source is not given
+    # the script will parse the standard input data
+    # i.e. cat somefile | python errpt-a_to_json.py
     else:
-        try:
-            result = grammar.parseString(sys.stdin.read(), parseAll=True).as_dict()
-            print(json.dumps(result, indent=4))
-        except Exception as e:
-            print("Screen dump error")
-            print(e)
-            exit(1)
+        result = parse_string(sys.stdin.read())
+        print(json.dumps(result, indent=4))
                         
 
 if __name__ == "__main__":
